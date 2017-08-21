@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xml>
+	<params>
+		<param id="splash_holdtime" value="2500" />
+		<param id="spin_holdtime" value="1300" />
+		<param id="spin_stopinterval" value="500" />
+		<param id="vo" value="1" />
+	   
+	</params>
+	
+</xml>
