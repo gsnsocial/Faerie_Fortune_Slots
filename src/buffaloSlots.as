@@ -1044,9 +1044,9 @@
 			__timeline.mcBlur5.visible=true;
 			
 			for(var col:int = 1; col<=5; col++){
-				for(var row:int = 1; row<=3; row++){
-					__timeline.mcReels["mcItems_" + col + "_" + row].gotoAndStop("clear");
-					__timeline.mcReels["mcItems_" + col + "_" + row].visible=false;
+				for(var row:int = 1; row<=4; row++){
+ 					__timeline.mcReels["mcItems_" + col + "_" + row].gotoAndStop("clear");
+ 					__timeline.mcReels["mcItems_" + col + "_" + row].visible=false;
 				}
 			}
 		}
