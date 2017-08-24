@@ -92,6 +92,7 @@
 		private var minMaxJson:Object;
 		private var betPerLine:Array;
 		private var betAmountsArr2:Array;
+		public var can_play:Boolean = false;
 
 		//------------------------------
 		// platfoerm events

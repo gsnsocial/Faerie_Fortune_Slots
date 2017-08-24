@@ -260,13 +260,18 @@
 
 			var params:Object = new Object();
 			
-			params.engineConfig="AmericanBuffaloDynamicWaysConfig";
+			params.engineConfig= "WildSavannahDynamicWaysConfig";      //  AmericanBuffaloDynamicWaysConfig
 			params.betUnit = bet;
 			params.state = last_gameState;
 			params.gameId = GAME_ID;
 			params.pluginstates = last_pluginStates;
 			params.mesmoGameId = GAME_ID;
 			params.tokenBalance = last_tokenBalance;
+			
+			trace("state = " + params.engineConfig);			
+			trace("pluginstates = " + JSON.encode(params.pluginstates));
+			
+			
 			
 			try{
 				if(__timeline.txt_cheatcode.text!=""){
@@ -277,6 +282,8 @@
 			}
 
 			var paramsJSON:String = JSON.encode(params);
+			 
+			trace(paramsJSON);
 			try{
 				api.sendJsonRequest('slotsSpin', paramsJSON, onSpinComplete, "POST");
 			}catch (e:Error){

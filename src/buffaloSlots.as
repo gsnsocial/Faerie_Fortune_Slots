@@ -97,6 +97,10 @@
 		public var started_freespins:Boolean = false;
 		private var stopBtnClicked:Boolean = false;
 		private var myTimer:Timer;
+		
+		private var autoSpinCount:int = 0;
+		private var waitingforAutoSpin:Boolean = false;
+		private var autospin_grace:Number = 0;
 	
 		//-----------------------------
 		// init
@@ -122,6 +126,7 @@
 			oGAME.freespins = 0;
 			oGAME.freespinwinnings = 0;
 			oGAME.freespinmode = false;
+			oGAME.autospinmode = false;
 
 			oMESSAGES = __controller.oMESSAGES;
 			oGAMESTATE = __controller.oGAMESTATE;
@@ -158,7 +163,7 @@
 
 					
 			__timeline.mcFreeSpinCount.visible=false;
-			__timeline.bSpin.visible=true;
+			__timeline.mc_spingroup.bSpin.visible=true;
 
 			//line bet up
 			__timeline.bBetUp.addEventListener(MouseEvent.CLICK, function(e:Event) {
@@ -257,28 +262,95 @@
 					}
 				}
 			});
+			
+			
+			
+			//auto spin
+			__timeline.mc_spingroup.mcAutoSpinSelect.visible = false;
+			blittools_text.doSwapTxt(__timeline.mc_spingroup.bAutoSpin.txt, oMESSAGES.button_autospin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+			blittools_text.doSwapTxt(__timeline.mc_spingroup.bAutoSpinStop.txt, oMESSAGES.button_stop, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+			blittools_general.doInitButton(__timeline.mc_spingroup.bAutoSpin);
+			blittools_general.doInitButton(__timeline.mc_spingroup.bAutoSpinStop);
+			blittools_general.doInitButton(__timeline.mc_spingroup.mcAutoSpinSelect.b5);
+			blittools_general.doInitButton(__timeline.mc_spingroup.mcAutoSpinSelect.b10);
+			blittools_general.doInitButton(__timeline.mc_spingroup.mcAutoSpinSelect.b25);
+			blittools_general.doInitButton(__timeline.mc_spingroup.mcAutoSpinSelect.b50);
+			
+			__timeline.mc_spingroup.bAutoSpin.enabled = false;
+			__timeline.mc_spingroup.bAutoSpinStop.visible = false;
+			
+			__timeline.mc_spingroup.bAutoSpin.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				if(!__controller.isPaused && __controller.can_play && e.currentTarget.enabled){
+					var me:MovieClip = MovieClip(e.currentTarget);
+					if(__timeline.mc_spingroup.bSpin.enabled && autoSpinCount==0){
+						blittools_sounds.playSound("snd_click", "INTERFACE");
+  						__timeline.mc_spingroup.mcAutoSpinSelect.visible=true;
+						//__timeline.mc_spingroup.bAutoSpin.visible=false;
+						return;
+					}
+				}
+			});			
+			
+ 			//stop button
+			__timeline.mc_spingroup.bAutoSpinStop.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				if(!__controller.isPaused && __controller.can_play && e.currentTarget.enabled){
+					blittools_text.doSwapTxt(__timeline.mc_spingroup.bAutoSpinStop.txt, oMESSAGES.button_stopping, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+					__timeline.mc_spingroup.bAutoSpinStop.enabled = false;
+					autoSpinCount = 0;
+				}
+			});
+			
+			
+			//auto spin options
+			__timeline.mc_spingroup.mcAutoSpinSelect.visible = false;
+			__timeline.mc_spingroup.mcAutoSpinSelect.b5.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				doStartAutoSpin(5); 
+			});
+			__timeline.mc_spingroup.mcAutoSpinSelect.b10.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				doStartAutoSpin(10); 
+			});
+			__timeline.mc_spingroup.mcAutoSpinSelect.b25.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				doStartAutoSpin(20); 
+			});
+			__timeline.mc_spingroup.mcAutoSpinSelect.b50.addEventListener(MouseEvent.CLICK, function(e:Event) {
+				doStartAutoSpin(50); 
+			});
+			
+			
+			
 	
 			//spin;
-			blittools_text.doSwapTxt(__timeline.bSpin.txt, oMESSAGES.button_spin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
-			blittools_general.doInitButton(__timeline.bSpin);
-			blittools_general.doInitButton(__timeline.bStop);
-			__timeline.bSpin.addEventListener(MouseEvent.CLICK, function(e:Event) {
+			blittools_text.doSwapTxt(__timeline.mc_spingroup.bSpin.txt, oMESSAGES.button_spin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+			blittools_general.doInitButton(__timeline.mc_spingroup.bSpin);
+			blittools_general.doInitButton(__timeline.mc_spingroup.bStop);
+			__timeline.mc_spingroup.bSpin.addEventListener(MouseEvent.CLICK, function(e:Event) {
 				if(e.currentTarget.enabled){
+
+					//cancel autospin
+					if(!oGAME.autospinmode){
+						doStopAutoSpin();
+					}
+					
 					started_freespins = false;
 					if(gsnTools.doGetVariable("bet") <= gsnTools.doGetVariable("bank")){
 						doChangeMessage();
 						doRequestSpin();
 					}else{
+						
+						if(oGAME.autospinmode){
+							doStopAutoSpin();
+						}
+ 						
 						blittools_sounds.playSound("snd_error", "INTERFACE");
 						var mc:MovieClip = new popup_error_tokens(__controller, __game);
 						__timeline.addChild(mc);
-						__timeline.bSpin.enabled = false;
+						__timeline.mc_spingroup.bSpin.enabled = false;
 					}
 				}
 			});
 	
 			// stop button
-			__timeline.bStop.addEventListener(MouseEvent.CLICK, stopAllReels);
+			__timeline.mc_spingroup.bStop.addEventListener(MouseEvent.CLICK, stopAllReels);
 			
 			//setup bank
 			__timeline.mcBank.isUpdating = false;
@@ -297,13 +369,14 @@
 			fade_music_timeout = setTimeout(doFadeMusic, 5 * 60000);
 			remind_spin_timeout = setTimeout(doRemindSpin, 5000);
 		
+			__controller.can_play = true;
 		}
 		
 
 		public function doRemindSpin():void{
 			if(remind_spin_timeout != -1){
 				remind_spin_timeout = -1;
-				tweenHolders.push(new Tween(__timeline.bSpin.mc_sheen, "x", None.easeNone, -100, 122, 2, true));
+				tweenHolders.push(new Tween(__timeline.mc_spingroup.bSpin.mc_sheen, "x", None.easeNone, -100, 122, 2, true));
 				remind_spin_timeout = setTimeout(doRemindSpin, 5000);
 			
 			}
@@ -600,11 +673,17 @@
 			cashoutOk = false;
 			__timeline.bBetUp.enabled = false;
 			__timeline.bBetDn.enabled = false;
-			__timeline.bSpin.enabled = false;
+			__timeline.mc_spingroup.bSpin.enabled = false;
+			__timeline.mc_spingroup.bAutoSpin.enabled = false;
 			__timeline.bCashOut.enabled = false;
 			__timeline.bPaytable.enabled = false;
 			
-			__timeline.bSpin.txt.alpha = .5;
+			if(oGAME.autospinmode){
+				__timeline.mc_spingroup.bSpin.txt.alpha = 1;
+			}else{
+				__timeline.mc_spingroup.bSpin.txt.alpha = .5;
+				__timeline.mc_spingroup.bAutoSpin.txt.alpha = .5;
+			}
 			
 			gsnTools.doChangeIdleState("off");
 			
@@ -620,10 +699,12 @@
 			timeoutHolders = new Array();
 			__timeline.bCashOut.enabled = true;
 			__timeline.bPaytable.enabled = true;
-			__timeline.bSpin.visible = true;
-			__timeline.bSpin.enabled = true;
+			__timeline.mc_spingroup.bSpin.visible = true;
+			__timeline.mc_spingroup.bSpin.enabled = true;
+			__timeline.mc_spingroup.bAutoSpin.enabled = true;
 			
-			__timeline.bSpin.txt.alpha = 1;
+			__timeline.mc_spingroup.bSpin.txt.alpha = 1;
+			__timeline.mc_spingroup.bAutoSpin.txt.alpha = 1;
 
 			clearTimeout(fade_music_timeout);
 			clearTimeout(remind_spin_timeout);
@@ -670,8 +751,9 @@
 		}
 
 		//doResetTurn()
-		public function doResetTurn(e=null):void
+		public function doResetTurn(extra_delay:Number = 0):void
 		{
+			var delay:Number = 0;
 			gsnTools.doSetVariable("spinwinnings", 0);
 			if(oGAME.freespins > 0){
 				oGAME.freespins--;
@@ -695,10 +777,10 @@
 
 			
 					//show spin button
-					tweenHolders.push(new Tween(__timeline.bSpin, "x", Regular.easeIn, __timeline.bSpin.x, 632, .5, true));
-					tweenHolders.push(new Tween(__timeline.bSpin, "alpha", None.easeNone, __timeline.bSpin.alpha, 1, 1, true));
-					tweenHolders.push(new Tween(__timeline.bStop, "x", Regular.easeIn, __timeline.bStop.x, 632, .5, true));
-					tweenHolders.push(new Tween(__timeline.bStop, "alpha", None.easeNone, __timeline.bStop.alpha, 1, 1, true));
+					tweenHolders.push(new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 632, .5, true));
+					tweenHolders.push(new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 1, 1, true));
+					tweenHolders.push(new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 632, .5, true));
+					tweenHolders.push(new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true));
 					
 					__timeline.mcFreeSpinCount.visible=false;
 					
@@ -708,8 +790,37 @@
 
 				}
 			}
+			
+			//autospin
+			if(oGAME.autospinmode){
+				if(autoSpinCount > 0){
+					//keep autospinning
+					autoSpinCount--;
+					delay += extra_delay;
+					__timeline.mc_spingroup.bAutoSpinStop.txt.text = autoSpinCount;
+					setTimeout(doResumeAutoSpin, delay);
+					return;
+				}else{
+					//autospins depleated
+					setTimeout(doStopAutoSpin, delay);
+				}
+			}
 		}
-		
+  
+		//doResumeAutoSpin()
+		private function doResumeAutoSpin(){
+			
+			//---paused-------
+			if(__controller.isPaused){
+				__controller.pauseResumeFunction = doResumeAutoSpin;
+				return;
+			}
+			//---------------
+			
+			doUnLockGame();
+			__timeline.mc_spingroup.bSpin.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+		}
+  		
 		private var wincycle_timeout:int;
 		private var wincycle_id:int;
 		private var wincycle_arr:Array = [];
@@ -748,8 +859,72 @@
 			}
 			wincycle_timeout = setTimeout(doCycleNextWin, 2000);
 		}
+		
+		
+				//doStartAutoSpin()
+		public function doStartAutoSpin(count:int):void
+		{
+ 			
+			trace("AUTO SPIN STARTED >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+count);
+			
+			waitingforAutoSpin = false;
+			autoSpinCount = (count-1);
+			oGAME.autospinmode = true;
+			
+			//manage buttons
+			__timeline.mc_spingroup.mcAutoSpinSelect.visible=false;
+			__timeline.mc_spingroup.bAutoSpin.visible=false;
+			__timeline.mc_spingroup.bAutoSpin.enabled=false;
+			
+			//stop button
+			__timeline.mc_spingroup.bAutoSpinStop.visible = true;
+			__timeline.mc_spingroup.bAutoSpinStop.enabled = false;
+			__timeline.mc_spingroup.bAutoSpinStop.txt.alpha = .5;
+			blittools_text.doSwapTxt(__timeline.mc_spingroup.bAutoSpinStop.txt, oMESSAGES.button_stop, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+			
+			__timeline.mc_spingroup.bAutoSpinStop.txt.text = autoSpinCount;
+			
+			//automate spin
+			__timeline.mc_spingroup.bSpin.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+			
+			setTimeout(doEnableAutoSpinStop, 1000);
+			
+		}
+		
+		private function doEnableAutoSpinStop():void
+		{
+			__timeline.mc_spingroup.bAutoSpinStop.enabled = true;
+			__timeline.mc_spingroup.bAutoSpinStop.txt.alpha = 1;	
+		}
 
-
+		//doStartAutoSpin()
+		public function doStopAutoSpin():void
+		{
+			
+			waitingforAutoSpin = false;
+			autoSpinCount = 0;
+			oGAME.autospinmode = false;
+			
+			//manage buttons
+			__timeline.mc_spingroup.mcAutoSpinSelect.visible=false;
+			__timeline.mc_spingroup.bAutoSpin.visible=true;
+			__timeline.mc_spingroup.bAutoSpinStop.visible=false;
+			
+			__timeline.mc_spingroup.bAutoSpin.enabled = false;
+			__timeline.mc_spingroup.bAutoSpin.txt.alpha = 1;	
+			
+			blittools_text.doSwapTxt(__timeline.mc_spingroup.bSpin.txt, oMESSAGES.button_spin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
+			
+			setTimeout(doEnableAutoSpin, 1000);
+			
+		}
+		
+				
+		private function doEnableAutoSpin():void
+		{
+			__timeline.mc_spingroup.bAutoSpin.enabled = true;
+			__timeline.mc_spingroup.bAutoSpin.txt.alpha = 1;	
+		}
 
 		//doRequestSpin()
 		private function doRequestSpin(is_free:Boolean = false):void
@@ -991,8 +1166,9 @@
 			myTimer.addEventListener(TimerEvent.TIMER_COMPLETE, doStopWheels);
 			myTimer.start();
 			
-
-			enableStopBtn();
+			if (!oGAME.autospinmode) {
+			   enableStopBtn();
+			}
 		}
 		
 
@@ -1057,8 +1233,7 @@
 				
 				
 			}
-
-
+ 
 
 
 			//----buffalo----------------------
@@ -1230,8 +1405,8 @@
 						myFrameClip.visible = true;
 						myFrameClip.doHighlight();
 					}else{
-						myFrameClip.doStop();
-						myFrameClip.visible = false;
+	//					myFrameClip.doStop();
+	//					myFrameClip.visible = false;
 					}
 				}
 			}
@@ -1358,11 +1533,13 @@
 				__timeline.mcBackground.sky2.visible=true;
 				new Tween(__timeline.mcBackground.sky2, "alpha", None.easeNone,  0, 1, 1, true);
 				
-				__timeline.bSpin.enabled = false;
-				new Tween(__timeline.bSpin, "x", Regular.easeIn, __timeline.bSpin.x, 850, 1, true);
-				new Tween(__timeline.bSpin, "alpha", None.easeNone, __timeline.bSpin.alpha, 0, 1, true);
-				new Tween(__timeline.bStop, "x", Regular.easeIn, __timeline.bStop.x, 850, 1, true);
-				new Tween(__timeline.bStop, "alpha", None.easeNone, __timeline.bStop.alpha, 0, 1, true);
+				//start freespin mode
+				__timeline.mc_spingroup.bAutoSpin.enabled = false;
+				__timeline.mc_spingroup.bSpin.enabled = false;
+				new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 850, 1, true);
+				new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 0, 1, true);
+				new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 850, 1, true);
+				new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 0, 1, true);
 				
 				oSPIN.accum_win += res.payout;
 				__timeline.mcPanelWin.txt.text = blittools_general.doFormatNumber(oSPIN.accum_win);
@@ -1432,27 +1609,27 @@
 				var mc:MovieClip = new popup_buy_tokens(__controller, __game);
 				__timeline.addChild(mc);
 			}
-			__timeline.bSpin.enabled = true;
+			__timeline.mc_spingroup.bSpin.enabled = true;
 		}
 		
 		
 		
 		private function enableStopBtn():void
 		{
-			__timeline.bSpin.visible = false;
-			__timeline.bStop.txt.mouseEnabled = false;
-			__timeline.bStop.enabled = true;
-			__timeline.bStop.txt.alpha = 1;
-			__timeline.bStop.buttonMode = true;
-			__timeline.bStop.addEventListener(MouseEvent.CLICK, stopAllReels);
+			__timeline.mc_spingroup.bSpin.visible = false;
+			__timeline.mc_spingroup.bStop.txt.mouseEnabled = false;
+			__timeline.mc_spingroup.bStop.enabled = true;
+			__timeline.mc_spingroup.bStop.txt.alpha = 1;
+			__timeline.mc_spingroup.bStop.buttonMode = true;
+			__timeline.mc_spingroup.bStop.addEventListener(MouseEvent.CLICK, stopAllReels);
 		}
 		
 		private function disableStopBtn():void
 		{
-			__timeline.bStop.enabled = false;
-			__timeline.bStop.txt.alpha = .5;
-			__timeline.bStop.buttonMode = false;
-			__timeline.bStop.removeEventListener(MouseEvent.CLICK, stopAllReels);
+			__timeline.mc_spingroup.bStop.enabled = false;
+			__timeline.mc_spingroup.bStop.txt.alpha = .5;
+			__timeline.mc_spingroup.bStop.buttonMode = false;
+			__timeline.mc_spingroup.bStop.removeEventListener(MouseEvent.CLICK, stopAllReels);
 		}
 		
 		public function doStopWheels(e:TimerEvent=null):void
