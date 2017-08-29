@@ -1405,8 +1405,8 @@
 						myFrameClip.visible = true;
 						myFrameClip.doHighlight();
 					}else{
-	//					myFrameClip.doStop();
-	//					myFrameClip.visible = false;
+	 					myFrameClip.doStop();
+						myFrameClip.visible = false;
 					}
 				}
 			}
@@ -1464,7 +1464,7 @@
 					bisonclip.y = 429;
 					var tw:Tween = new Tween(bisonclip, "x", None.easeNone, myx, -429, mytime, true);
 					tweenHolders2.push(tw);
-					tw.addEventListener(TweenEvent.MOTION_FINISH, function(e:TweenEvent){
+					tw.addEventListener(Event.COMPLETE, function(e:TweenEvent){
 						__timeline.removeChild(MovieClip(e.currentTarget.obj));
 					});
 				}
