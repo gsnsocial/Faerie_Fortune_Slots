@@ -429,8 +429,9 @@
 			}
 			extra_icons = [];
 		}
-		
-
+ 
+	 
+		 
 		
 		//--------------------------------------
 		// general
@@ -1405,8 +1406,8 @@
 						myFrameClip.visible = true;
 						myFrameClip.doHighlight();
 					}else{
-	 					myFrameClip.doStop();
-						myFrameClip.visible = false;
+ 	 					myFrameClip.doStop();
+ 						myFrameClip.visible = false;
 					}
 				}
 			}
@@ -1438,7 +1439,7 @@
 			//animate bison
 			if(winning_symbol == "F" && res.symbols.length >= 2){
 				
-				var startarr:Array = [400,200,600,800,0];
+			 	var startarr:Array = [500,600,700,750,800];
 				blittools_sounds.playSound("stampede", "SFX3");
 				next_delay = 3000;
 					
@@ -1455,21 +1456,18 @@
 					var bisonclip:MovieClip = MovieClip(new bison());
 					__timeline.addChild(bisonclip);
 					
-					var myx:Number = 992 + startarr[i];
-					if(i==res.symbols.length){
+					var myx:Number = 0 - startarr[i];
+					/*if(i==res.symbols.length){
 						myx = 992;
 					}
-					var mytime:Number = 2.8 + Math.random()*1;
+					var mytime:Number = 2.8 + Math.random()*1;   */
 					bisonclip.x = myx;
-					bisonclip.y = 429;
-					var tw:Tween = new Tween(bisonclip, "x", None.easeNone, myx, -429, mytime, true);
-					tweenHolders2.push(tw);
-					tw.addEventListener(Event.COMPLETE, function(e:TweenEvent){
-						__timeline.removeChild(MovieClip(e.currentTarget.obj));
-					});
+					bisonclip.y = 368;
+					//var tw:Tween = new Tween(bisonclip, "x", None.easeNone, myx, -429, mytime, true);
+					//tweenHolders2.push(tw);
+ 					bisonclip.addEventListener(Event.ENTER_FRAME, onEnterFrameCompleted);
 				}
-				
-			}
+ 			}
 
 			//update freespin total
 			if(oGAME.freespinmode){
@@ -1485,7 +1483,13 @@
 			setTimeout(doNextResult, next_delay);
 		}
 		
-
+		private function onEnterFrameCompleted(eve:Event):void
+		{
+			 if(MovieClip(eve.target).currentFrameLabel == "End"){
+				 MovieClip(eve.target).removeEventListener(Event.ENTER_FRAME, onEnterFrameCompleted);
+				 __timeline.removeChild(MovieClip(eve.target));
+			 }
+		}
 
 		public function doShowScatterResult(res:Object):void
 		{
