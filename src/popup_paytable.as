@@ -68,7 +68,7 @@
 		{
 			this.gotoAndStop("p1");
 			
-			txt_page.text = "1/3";
+			txt_page.text = "1/2";
 			
 			blittools_text.doSwapTxt(hdr_paytable, oMESSAGES.hdr_paytable, []);
 			blittools_text.doSwapTxt(msg_paytable, oMESSAGES.msg_paytable, []);
@@ -83,14 +83,47 @@
 
 			
 		}
-
+		
 		private function doGotoPage2():void
 		{
 			
 			this.gotoAndStop("p2");
 			
+			txt_page.text = "2/2";
 			
-			txt_page.text = "2/3";
+//			blittools_text.doSwapTxt(hdr_features, oMESSAGES.hdr_features, []);
+			blittools_text.doSwapTxt(hdr_ways, oMESSAGES.hdr_ways, []);
+			blittools_text.doSwapTxt(msg_ways, oMESSAGES.msg_ways, []);
+			blittools_text.doSwapTxt(hdr_freespinmode, oMESSAGES.hdr_freespinmode, []);
+			blittools_text.doSwapTxt(msg_freespinmode1, oMESSAGES.msg_freespinmode1,[]);
+			blittools_text.doSwapTxt(msg_freespinmode2, oMESSAGES.msg_freespinmode2,[]);
+			
+			blittools_text.doSwapTxt(hdr_wilds, oMESSAGES.hdr_wilds, []);
+			blittools_text.doSwapTxt(msg_wilds1, oMESSAGES.msg_wilds1,[]);
+//			blittools_text.doSwapTxt(msg_wilds2, oMESSAGES.msg_wilds2,[]);
+
+ 			
+			blittools_general.doInitButton(bPrev);
+			
+			bPrev.addEventListener(MouseEvent.CLICK, function(e:Event):void {
+	 
+				blittools_sounds.playSound("snd_click", "INTERFACE");
+				doGotoPage1();
+			});
+			
+
+			bNext.alpha = .5;
+ 			
+		}
+		
+
+/*		private function doGotoPage3():void
+		{
+			
+			this.gotoAndStop("p3");
+			
+			
+			txt_page.text = "3/3";
 			blittools_text.doSwapTxt(hdr_paytable, oMESSAGES.hdr_paytable, []);
 			blittools_text.doSwapTxt(msg_scattersymbols, oMESSAGES.msg_scattersymbols, []);
 			
@@ -106,40 +139,9 @@
 				doGotoPage3();
 			});
 
-			
-		}
-		
-		private function doGotoPage3():void
-		{
-			
-			this.gotoAndStop("p3");
-			
-			txt_page.text = "3/3";
-			
-			blittools_text.doSwapTxt(hdr_features, oMESSAGES.hdr_features, []);
-			blittools_text.doSwapTxt(hdr_ways, oMESSAGES.hdr_ways, []);
-			blittools_text.doSwapTxt(msg_ways, oMESSAGES.msg_ways, []);
-			blittools_text.doSwapTxt(hdr_freespinmode, oMESSAGES.hdr_freespinmode, []);
-			blittools_text.doSwapTxt(msg_freespinmode1, oMESSAGES.msg_freespinmode1,[]);
-			blittools_text.doSwapTxt(msg_freespinmode2, oMESSAGES.msg_freespinmode2,[]);
-			
-			blittools_text.doSwapTxt(hdr_wilds, oMESSAGES.hdr_wilds, []);
-			blittools_text.doSwapTxt(msg_wilds1, oMESSAGES.msg_wilds1,[]);
-			blittools_text.doSwapTxt(msg_wilds2, oMESSAGES.msg_wilds2,[]);
+ 		}
+*/		
 
-		
-			
-			blittools_general.doInitButton(bPrev);
-			bPrev.addEventListener(MouseEvent.CLICK, function(e:Event):void {
-				blittools_sounds.playSound("snd_click", "INTERFACE");
-				doGotoPage2();
-			});
-			
-
-			bNext.alpha = .5;
-
-			
-		}
 
 		private function doDestroy(){
 			MovieClip(this.parent).removeChild(this);	
