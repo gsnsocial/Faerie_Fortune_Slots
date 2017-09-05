@@ -428,10 +428,8 @@
 				extra_icons[i]=null;
 			}
 			extra_icons = [];
-		}
- 
-	 
-		 
+   		}
+  
 		
 		//--------------------------------------
 		// general
@@ -482,7 +480,8 @@
 			}
 		}
 		
-		//doUpdateBank()
+ 
+ 		//doUpdateBank()
 		public function doUpdateBank(from_win:Boolean = true):Number
 		{
 			var new_bank:Number = gsnTools.doGetVariable("bank");
@@ -523,6 +522,8 @@
 							mc_msg.x = 380;
 							mc_msg.y = 260;
 							__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
+							mc_msg.addEventListener(Event.ENTER_FRAME, onSparkleAnimation)
+						 
 						}
 					}
 					
@@ -550,6 +551,20 @@
 			return anim_time;
 		}
 		
+		private function onSparkleAnimation(eve:Event):void
+		{
+			
+			var me:MovieClip = MovieClip(eve.target);
+			
+			if(__timeline.mcBank.currentValue == __timeline.mcBank.targetValue)
+			{
+				me.removeEventListener(Event.ENTER_FRAME, onSparkleAnimation);
+				__timeline.removeChild(me);
+			}
+ 		}
+		
+		
+		
 		//doUpdateBank()
 		public function doSnapBank():void
 		{
@@ -565,8 +580,7 @@
 			}catch(e){
 				
 			}
-			
-			
+ 			
 			var new_bank:Number = gsnTools.doGetVariable("bank");
 			__timeline.mcBank.currentValue = new_bank;
 			__timeline.mcBank.targetValue = new_bank;
@@ -593,8 +607,7 @@
 					}
 					me.frame_counter--;
 				}
-				
-				
+ 				
 			}else{
 				me.currentValue = me.targetValue;
 				me.txt.text = blittools_general.doFormatNumber(me.currentValue);
@@ -602,7 +615,8 @@
 			if (me.currentValue == me.targetValue){
 				blittools_sounds.stopSound("SFX1");
 				me.removeEventListener(Event.ENTER_FRAME, doAnimateBank);
-			}
+  				//__timeline.removeChild(me);
+  			}
 		}
 		
 		//doGetDefaultBetId()
@@ -982,12 +996,9 @@
 					});
 				
 				}
-				
-				
+ 				
 			}
-			
-			
-			
+  			
 			//clear message
 			doChangeMessage();
 			
@@ -1443,14 +1454,13 @@
 				blittools_sounds.playSound("stampede", "SFX3");
 				next_delay = 3000;
 					
-				if(res.symbols.length >= 5){
+				/*if(res.symbols.length >= 5){
 					var mc_msg:MovieClip = new bigwin_msg("stampede", 2);
 					mc_msg.x = 380;
 					mc_msg.y = 260;
 					__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
-						
-					blittools_sounds.playSound("vo_stampede", "VO");
-				}
+ 					blittools_sounds.playSound("vo_stampede", "VO");
+				} */
 							
 				for(var i:int = 1; i<=res.symbols.length; i++){
 					var bisonclip:MovieClip = MovieClip(new bison());
