@@ -808,6 +808,7 @@
 					tweenHolders.push(new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true));
 					
 					__timeline.mcFreeSpinCount.visible=false;
+					__timeline.mc_spingroup.bSpin.visible = true;
 					
 					new Tween(__timeline.mcBackground.sky2, "alpha", None.easeNone,  1, 0, 1, true).addEventListener(TweenEvent.MOTION_FINISH, function(e:Event){
 						__timeline.mcBackground.sky2.visible=false;
