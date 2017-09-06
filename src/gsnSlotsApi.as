@@ -260,7 +260,7 @@
 
 			var params:Object = new Object();
 			
-			params.engineConfig=   "WildSavannahDynamicWaysConfig";  //"AmericanBuffaloDynamicWaysConfig";
+			params.engineConfig= "AmericanBuffaloDynamicWaysConfig"; // "FairyFabiesDynamicWaysConfig"; //"WildSavannahDynamicWaysConfig"; 
 			params.betUnit = bet;
 			params.state = last_gameState;
 			params.gameId = GAME_ID;

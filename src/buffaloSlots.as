@@ -101,6 +101,7 @@
 		private var autoSpinCount:int = 0;
 		private var waitingforAutoSpin:Boolean = false;
 		private var autospin_grace:Number = 0;
+		private var autoSpinToggle:Boolean;
 	
 		//-----------------------------
 		// init
@@ -284,8 +285,17 @@
 					var me:MovieClip = MovieClip(e.currentTarget);
 					if(__timeline.mc_spingroup.bSpin.enabled && autoSpinCount==0){
 						blittools_sounds.playSound("snd_click", "INTERFACE");
-  						__timeline.mc_spingroup.mcAutoSpinSelect.visible=true;
+  						
+						if(!autoSpinToggle){
+							__timeline.mc_spingroup.mcAutoSpinSelect.visible=true;
+							autoSpinToggle = true;
+  						}else{
+							__timeline.mc_spingroup.mcAutoSpinSelect.visible=false;
+							autoSpinToggle = false;
+						}
+						
 						//__timeline.mc_spingroup.bAutoSpin.visible=false;
+						
 						return;
 					}
 				}

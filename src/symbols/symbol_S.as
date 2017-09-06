@@ -16,9 +16,9 @@
 		private var oMESSAGES:Object;
 		
 		public function symbol_S():void{
-			this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void
+			/*this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void
 			{
-				mc_sky.visible = false;
+				 mc_sky.visible = false;
 				mc_txt.visible = false;
 				mc_txt_2.visible=true;
 				
@@ -26,32 +26,27 @@
 				
 				blittools_text.doSwapTxt(mc_txt.txt, oMESSAGES.symbol_freespins);
 				blittools_text.doSwapTxt(mc_txt_2.txt, oMESSAGES.symbol_bonus);
-				addEventListener(Event.ENTER_FRAME, doRotateSun);
+				addEventListener(Event.ENTER_FRAME, doRotateSun); 
 
 			});
 
 			this.addEventListener(Event.REMOVED_FROM_STAGE, function(e:Event):void
 			{
 				removeEventListener(Event.ENTER_FRAME, doRotateSun); 
-			});
-			
-		}
+			});      */ 
+ 		}           
 
-
-
-
+ 
 		public function doStopAnimate():void
 		{
-			removeEventListener(Event.ENTER_FRAME, doRotateSun);
-			new Tween(mc_txt_2, "alpha", None.easeNone, mc_txt_2.alpha, 0, .5, true); 
-		}
-			
-			
-			
+			//removeEventListener(Event.ENTER_FRAME, doRotateSun);
+			//new Tween(mc_txt_2, "alpha", None.easeNone, mc_txt_2.alpha, 0, .5, true); 
+		}  
+  			
 			
 		public function doHighlight():void
 		{
-			mc_sky.alpha = 0;
+			/* mc_sky.alpha = 0;
 			mc_sky.visible = true;
 			new Tween(mc_sun, "y", Regular.easeInOut, mc_sun.y, mc_sun.y-30, 1, true);
 			new Tween(mc_burst, "y", Regular.easeInOut, mc_burst.y, mc_burst.y-30, 1, true);
@@ -60,25 +55,26 @@
 			
 			mc_txt.visible = true;
 			new Tween(mc_txt, "alpha", None.easeNone, 0, 1, 1, true);
-			mc_txt_2.alpha=0;
-		}
+			mc_txt_2.alpha=0;  */
+ 			
+			var __this = this;
+ 			__this.gotoAndPlay(2);
+ 		}
 		
 		public function doPulse():void
 		{
-			new Tween(mc_burst, "rotation", Regular.easeInOut, mc_burst.rotation, mc_burst.rotation-100, 2, true);
+			//new Tween(mc_burst, "rotation", Regular.easeInOut, mc_burst.rotation, mc_burst.rotation-100, 2, true);
 		}
 		
 		
 		//rotate sun
 		public function doRotateSun(e:Event):void
 		{
+ 			///my_speed += (my_targetspeed-my_speed)*.2;
+			//mc_burst.rotation -= my_speed;
+ 		}
 			
-			//my_speed += (my_targetspeed-my_speed)*.2;
-			mc_burst.rotation -= my_speed;
-			
-		}
-			
-			
+	 
 			
 
 

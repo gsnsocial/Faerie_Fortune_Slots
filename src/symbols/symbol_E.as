@@ -27,11 +27,13 @@
 			
 		public function doHighlight():void
 		{
-			new Tween(mc_circle, "scaleX", Regular.easeOut,  1, 1.2, .5, true);
+			/*new Tween(mc_circle, "scaleX", Regular.easeOut,  1, 1.2, .5, true);
 			new Tween(mc_circle, "scaleY", Regular.easeOut,  1, 1.2, .5, true).addEventListener(TweenEvent.MOTION_FINISH, function(e:Event){
 				new Tween(mc_circle, "scaleX", Regular.easeIn,  mc_circle.scaleX, 1, .3, true);
 				new Tween(mc_circle, "scaleY", Regular.easeIn,  mc_circle.scaleY, 1, .3, true);
-			});
+			});  */
+			
+			mc_circle.gotoAndPlay(2);
 		}
 
 	}

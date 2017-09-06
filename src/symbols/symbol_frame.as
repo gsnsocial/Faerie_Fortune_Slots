@@ -31,8 +31,8 @@
 
 		public function doHighlight():void
 		{
-			//new Tween(this, "scaleX", Regular.easeOut, .8, 1, .3, true);
-			//new Tween(this, "scaleY", Regular.easeOut, .8, 1, .3, true);
+			new Tween(this, "scaleX", Regular.easeOut, .8, 1, .3, true);
+			new Tween(this, "scaleY", Regular.easeOut, .8, 1, .3, true);
 			blink_count=0;
 			this.visible=false;
 			timeout = setTimeout(doBlinkOn, 250);
@@ -51,9 +51,8 @@
 			if(blink_count < 2){
 				timeout = setTimeout(doBlinkOff, 250);
 			}
-			
-			
-		}
+  		}
+		
 		private function doBlinkOff():void
 		{
 			this.visible=false;

@@ -19,7 +19,7 @@
 		
 		
 		public function symbol_W():void{
-			this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void
+			/* this.addEventListener(Event.ADDED_TO_STAGE, function(e:Event):void
 			{
 				mc_sky.scrollRect = new Rectangle(myx,0,120,100);
 				mc_sky.addEventListener(Event.ENTER_FRAME, doScrollSky);
@@ -34,32 +34,37 @@
 			this.addEventListener(Event.REMOVED_FROM_STAGE, function(e:Event):void
 			{
 				mc_sky.removeEventListener(Event.ENTER_FRAME, doScrollSky);
-			});
+			});  */
 			
 		}
 		
-		public function doStop():void
-		{
-			mc_sky.removeEventListener(Event.ENTER_FRAME, doScrollSky);
-		}
+	
 
 		public function doHighlight():void
 		{
-			new Tween(mc_txt, "rotationY", Regular.easeIn,  0, -90, .35, true).addEventListener(TweenEvent.MOTION_FINISH, doFlip2);
+			// new Tween(mc_txt, "rotationY", Regular.easeIn,  0, -90, .35, true).addEventListener(TweenEvent.MOTION_FINISH, doFlip2);
+			var __this = this;
+			__this.gotoAndPlay(2);
 		}
 		
+		
+		public function doStop():void
+		{
+			//mc_sky.removeEventListener(Event.ENTER_FRAME, doScrollSky);
+		}		
+		
 		private function doFlip2(e:Event){
-			new Tween(mc_txt, "rotationY", Regular.easeOut,  -90, 0, .35, true).addEventListener(TweenEvent.MOTION_FINISH, doFlip3);
+			//new Tween(mc_txt, "rotationY", Regular.easeOut,  -90, 0, .35, true).addEventListener(TweenEvent.MOTION_FINISH, doFlip3);
 		}
 		
 		private function doFlip3(e:Event){
-			mc_txt.transform.matrix = new Matrix(1, 0, 0, 1, mc_txt.x, mc_txt.y);
+			//mc_txt.transform.matrix = new Matrix(1, 0, 0, 1, mc_txt.x, mc_txt.y);
 		}
 		
-		
+	 
 		
 
-		public function doScrollSky(e:Event):void
+	/*	public function doScrollSky(e:Event):void
 		{
 			var rect:Rectangle = e.currentTarget.scrollRect;
 			rect.x += my_speed;
@@ -69,7 +74,7 @@
 			e.currentTarget.scrollRect = rect;
 		}
 			
-			
+		*/	
 
 
 	}

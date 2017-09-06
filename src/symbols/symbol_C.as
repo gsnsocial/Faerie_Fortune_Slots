@@ -28,19 +28,20 @@
 			
 		public function doHighlight():void
 		{
-			mc_animal.rotationX=0;
+			/*mc_animal.rotationX=0;
 			new Tween(mc_animal, "scaleX", Regular.easeOut,  1, 1.1, .33, true);
-			new Tween(mc_animal, "scaleY", Regular.easeOut,  1, 1.1, .33, true).addEventListener(TweenEvent.MOTION_FINISH, doScale2);
+			new Tween(mc_animal, "scaleY", Regular.easeOut,  1, 1.1, .33, true).addEventListener(TweenEvent.MOTION_FINISH, doScale2); */
+			mc_animal.gotoAndPlay(2);
 		}
 		
-		private function doScale2(e:Event){
+		/*private function doScale2(e:Event){
 			new Tween(mc_animal, "scaleX", Regular.easeIn,  mc_animal.scaleX, 1, .33, true);
 			new Tween(mc_animal, "scaleY", Regular.easeIn,  mc_animal.scaleY, 1, .33, true).addEventListener(TweenEvent.MOTION_FINISH, doRestore);
 		}
 		
 		private function doRestore(e:Event){
 			mc_animal.transform.matrix = new Matrix(1, 0, 0, 1, mc_animal.x, mc_animal.y);
-		}
+		} */
 
 	}
 }

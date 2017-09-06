@@ -44,7 +44,7 @@
 		public var __game:buffaloSlots;
 		public var __timeline:MovieClip = MovieClip(this);
 		public var __controller:* = this;
-		public var game_id:int = 521; //521;
+		public var game_id:int = 725; //521;
 		
 		//gsn
 		public var messagesUrl:String;
