@@ -441,8 +441,10 @@
 				extra_icons[i]=null;
 			}
 			extra_icons = [];
-			 
- 		}
+			  
+  		}
+		
+		 
   
 		
 		//--------------------------------------
@@ -805,12 +807,12 @@
 					 __timeline.mc_spingroup.bSpin.enabled = true;
 					 __timeline.mc_spingroup.bSpin.visible = true
 					//show spin button
-					 new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 632, .5, true);
+					 new Tween(__timeline.mc_spingroup.bSpin, "y", Regular.easeIn, __timeline.mc_spingroup.bSpin.y, 0.45, .5, true);
 					 new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 1, 1, true);
-					 new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 632, .5, true);
+					 new Tween(__timeline.mc_spingroup.bStop, "y", Regular.easeIn, __timeline.mc_spingroup.bStop.y, 0.45, .5, true);
 					 new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true);
 					
-					__timeline.mcFreeSpinCount.visible=true;
+					__timeline.mcFreeSpinCount.visible=false;
  
 					
 					new Tween(__timeline.mcBackground.sky2, "alpha", None.easeNone,  1, 0, 1, true).addEventListener(TweenEvent.MOTION_FINISH, function(e:Event){
@@ -1464,18 +1466,17 @@
 			//animate bison
 			if(winning_symbol == "F" && res.symbols.length >= 2){
 				
-			 	var startarr:Array = [500,600,700,750,800];
-				blittools_sounds.playSound("stampede", "SFX3");
+ 				blittools_sounds.playSound("stampede", "SFX3");
 				next_delay = 3000;
 					
-				/*if(res.symbols.length >= 5){
+				if(res.symbols.length >= 5){
 					var mc_msg:MovieClip = new bigwin_msg("stampede", 2);
 					mc_msg.x = 380;
 					mc_msg.y = 260;
 					__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
  					blittools_sounds.playSound("vo_stampede", "VO");
-				} */
-   				
+				}
+    				
 				fairyAnimCountToRun = res.symbols.length;
 				fairyCountTimer = new Timer(1000, res.symbols.length);
 				fairyCountTimer.addEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
@@ -1574,9 +1575,9 @@
 				//start freespin mode
 				__timeline.mc_spingroup.bAutoSpin.enabled = false;
 				__timeline.mc_spingroup.bSpin.enabled = false;
-				new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 850, 1, true);
+				new Tween(__timeline.mc_spingroup.bSpin, "y", Regular.easeIn, __timeline.mc_spingroup.bSpin.y, 10, 1, true);
 				new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 0, 1, true);
-				new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 850, 1, true);
+				new Tween(__timeline.mc_spingroup.bStop, "y", Regular.easeIn, __timeline.mc_spingroup.bStop.y, 10, 1, true);
 				new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 0, 1, true);
 				
 				oSPIN.accum_win += res.payout;

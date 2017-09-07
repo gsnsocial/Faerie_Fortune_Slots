@@ -45,7 +45,7 @@
 			
 			new Tween(__this, "scaleX", Elastic.easeOut,  .5, 1, 1.5, true);
 			new Tween(__this, "scaleY", Elastic.easeOut,  .5, 1, 1.5, true);
-			new Tween(mc_msg.mc_sheen, "x", None.easeNone,  -440, 440, 2, true);
+			//new Tween(mc_msg.mc_sheen, "x", None.easeNone,  -440, 440, 2, true);
 			
 			timeout = setTimeout(doDestroy, destroy*1000);
 			
