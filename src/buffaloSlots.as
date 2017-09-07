@@ -102,6 +102,9 @@
 		private var waitingforAutoSpin:Boolean = false;
 		private var autospin_grace:Number = 0;
 		private var autoSpinToggle:Boolean;
+		
+		private var fairyAnimCountToRun:int = 0;
+		private var fairyCountTimer:Timer;
 	
 		//-----------------------------
 		// init
@@ -165,7 +168,7 @@
 					
 			__timeline.mcFreeSpinCount.visible=false;
 			__timeline.mc_spingroup.bSpin.visible=true;
-
+ 
 			//line bet up
 			__timeline.bBetUp.addEventListener(MouseEvent.CLICK, function(e:Event) {
 				if(e.currentTarget.enabled){
@@ -438,7 +441,8 @@
 				extra_icons[i]=null;
 			}
 			extra_icons = [];
-   		}
+			 
+ 		}
   
 		
 		//--------------------------------------
@@ -486,8 +490,7 @@
 					new Tween(__timeline.mcResults, "scaleX", Regular.easeOut, .8, 1, .3, true);
 					new Tween(__timeline.mcResults, "scaleY", Regular.easeOut,.8, 1, .3, true);
 				}
-				
-			}
+ 			}
 		}
 		
  
@@ -573,8 +576,7 @@
 			}
  		}
 		
-		
-		
+ 		
 		//doUpdateBank()
 		public function doSnapBank():void
 		{
@@ -800,15 +802,16 @@
 					blittools_sounds.setVol("MUSIC", .2, 0);
 					blittools_sounds.playSound("music", "MUSIC", 999, null);
 
-			
+					 __timeline.mc_spingroup.bSpin.enabled = true;
+					 __timeline.mc_spingroup.bSpin.visible = true
 					//show spin button
-					tweenHolders.push(new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 632, .5, true));
-					tweenHolders.push(new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 1, 1, true));
-					tweenHolders.push(new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 632, .5, true));
-					tweenHolders.push(new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true));
+					 new Tween(__timeline.mc_spingroup.bSpin, "x", Regular.easeIn, __timeline.mc_spingroup.bSpin.x, 632, .5, true);
+					 new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 1, 1, true);
+					 new Tween(__timeline.mc_spingroup.bStop, "x", Regular.easeIn, __timeline.mc_spingroup.bStop.x, 632, .5, true);
+					 new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true);
 					
-					__timeline.mcFreeSpinCount.visible=false;
-					__timeline.mc_spingroup.bSpin.visible = true;
+					__timeline.mcFreeSpinCount.visible=true;
+ 
 					
 					new Tween(__timeline.mcBackground.sky2, "alpha", None.easeNone,  1, 0, 1, true).addEventListener(TweenEvent.MOTION_FINISH, function(e:Event){
 						__timeline.mcBackground.sky2.visible=false;
@@ -1472,22 +1475,12 @@
 					__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
  					blittools_sounds.playSound("vo_stampede", "VO");
 				} */
-							
-				for(var i:int = 1; i<=res.symbols.length; i++){
-					var bisonclip:MovieClip = MovieClip(new bison());
-					__timeline.addChild(bisonclip);
-					
-					var myx:Number = 0 - startarr[i];
-					/*if(i==res.symbols.length){
-						myx = 992;
-					}
-					var mytime:Number = 2.8 + Math.random()*1;   */
-					bisonclip.x = myx;
-					bisonclip.y = 368;
-					//var tw:Tween = new Tween(bisonclip, "x", None.easeNone, myx, -429, mytime, true);
-					//tweenHolders2.push(tw);
- 					bisonclip.addEventListener(Event.ENTER_FRAME, onEnterFrameCompleted);
-				}
+   				
+				fairyAnimCountToRun = res.symbols.length;
+				fairyCountTimer = new Timer(1000, res.symbols.length);
+				fairyCountTimer.addEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
+			    fairyCountTimer.start();
+ 	 
  			}
 
 			//update freespin total
@@ -1503,6 +1496,26 @@
 			
 			setTimeout(doNextResult, next_delay);
 		}
+		
+         //Timer to add the Fairy Animation one by one to cross the screen.
+		private function addFairyAnimInTimer(eve:TimerEvent):void
+		{
+              if(fairyCountTimer.currentCount == fairyAnimCountToRun)	{
+						
+						fairyCountTimer.removeEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
+						fairyCountTimer.stop();
+				}					
+			
+				var bisonclip:MovieClip = MovieClip(new bison());
+				__timeline.addChild(bisonclip);
+				
+				bisonclip.x = -337.95;
+				bisonclip.y = 364.95;
+				bisonclip.addEventListener(Event.ENTER_FRAME, onEnterFrameCompleted);
+ 		}
+		
+ 		
+		
 		
 		private function onEnterFrameCompleted(eve:Event):void
 		{

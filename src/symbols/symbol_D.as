@@ -32,9 +32,8 @@
 				new Tween(mc_circle, "scaleX", Regular.easeIn,  mc_circle.scaleX, 1, .3, true);
 				new Tween(mc_circle, "scaleY", Regular.easeIn,  mc_circle.scaleY, 1, .3, true);
 			}); */
-			 var __this = this;
-			 __this.gotoAndPlay(2);
-		}
+			mc_animal.gotoAndPlay(2);
+ 		}
 
 	}
 }

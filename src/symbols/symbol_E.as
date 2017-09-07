@@ -33,7 +33,8 @@
 				new Tween(mc_circle, "scaleY", Regular.easeIn,  mc_circle.scaleY, 1, .3, true);
 			});  */
 			
-			mc_circle.gotoAndPlay(2);
+			var __this = this;
+			__this.gotoAndPlay(2);
 		}
 
 	}

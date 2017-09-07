@@ -31,7 +31,8 @@
 			/*mc_animal.rotationX=0;
 			new Tween(mc_animal, "scaleX", Regular.easeOut,  1, 1.1, .33, true);
 			new Tween(mc_animal, "scaleY", Regular.easeOut,  1, 1.1, .33, true).addEventListener(TweenEvent.MOTION_FINISH, doScale2); */
-			mc_animal.gotoAndPlay(2);
+			var __this = this;
+			__this.gotoAndPlay(2);
 		}
 		
 		/*private function doScale2(e:Event){

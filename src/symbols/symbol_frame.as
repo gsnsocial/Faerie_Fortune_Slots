@@ -31,32 +31,35 @@
 
 		public function doHighlight():void
 		{
-			new Tween(this, "scaleX", Regular.easeOut, .8, 1, .3, true);
-			new Tween(this, "scaleY", Regular.easeOut, .8, 1, .3, true);
+			// new Tween(this, "scaleX", Regular.easeOut, .8, 1, .3, true);
+			// new Tween(this, "scaleY", Regular.easeOut, .8, 1, .3, true);
 			blink_count=0;
-			this.visible=false;
-			timeout = setTimeout(doBlinkOn, 250);
+			this.visible=true;
+			
+			this.gotoAndPlay(2);
+			//timeout = setTimeout(doBlinkOn, 250);
 		}
 		
 		public function doStop():void
 		{
-			clearTimeout(timeout);
+			//clearTimeout(timeout);
 			this.visible=false;
+			this.gotoAndStop(2);
 		}
 		
 		private function doBlinkOn():void
 		{
-			this.visible=true;
+			/*this.visible=true;
 			blink_count++;
 			if(blink_count < 2){
 				timeout = setTimeout(doBlinkOff, 250);
-			}
+			}*/
   		}
 		
 		private function doBlinkOff():void
 		{
-			this.visible=false;
-			timeout = setTimeout(doBlinkOn, 250);
+			/*this.visible=false;
+			timeout = setTimeout(doBlinkOn, 250);*/
 			
 		}
 
