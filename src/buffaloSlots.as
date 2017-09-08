@@ -731,6 +731,7 @@
 			__timeline.mc_spingroup.bSpin.visible = true;
 			__timeline.mc_spingroup.bSpin.enabled = true;
 			__timeline.mc_spingroup.bAutoSpin.enabled = true;
+			autoSpinToggle = false;
 			
 			__timeline.mc_spingroup.bSpin.txt.alpha = 1;
 			__timeline.mc_spingroup.bAutoSpin.txt.alpha = 1;
@@ -926,6 +927,7 @@
 		{
 			__timeline.mc_spingroup.bAutoSpinStop.enabled = true;
 			__timeline.mc_spingroup.bAutoSpinStop.txt.alpha = 1;	
+			autoSpinToggle = false;
 		}
 
 		//doStartAutoSpin()
@@ -955,6 +957,8 @@
 		{
 			__timeline.mc_spingroup.bAutoSpin.enabled = true;
 			__timeline.mc_spingroup.bAutoSpin.txt.alpha = 1;	
+			autoSpinToggle = false;
+			
 		}
 
 		//doRequestSpin()
