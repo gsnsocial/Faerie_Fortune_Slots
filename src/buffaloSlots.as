@@ -66,8 +66,9 @@
 		public var tweenHolders2:Array = new Array();
 		
 		
-		
-		public var betAmountsArr:Array = new Array(40,80,200,400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000);
+		public var betAmountsArr:Array = new Array(400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000);
+		//public var betAmountsArr:Array = new Array(40,80,200,400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000);
+ 		
 		public var betAmountId:uint = 0;
 		public var last_betid:int = -1;
 		
@@ -537,7 +538,7 @@
 							mc_msg.x = 380;
 							mc_msg.y = 260;
 							__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
-							mc_msg.addEventListener(Event.ENTER_FRAME, onSparkleAnimation)
+							mc_msg.addEventListener(Event.ENTER_FRAME, onSparkleAnimation);
 						 
 						}
 					}
@@ -774,8 +775,8 @@
 				
 			}else{
 				//award winngins
-				doUpdateBank();
-				doResetTurn();
+				anim_time = doUpdateBank();
+				doResetTurn(anim_time*1000);
 			}
 	
 		}
@@ -1482,11 +1483,8 @@
 				}
     				
 				fairyAnimCountToRun = res.symbols.length;
-				fairyCountTimer = new Timer(1000, res.symbols.length);
-				fairyCountTimer.addEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
-			    fairyCountTimer.start();
- 	 
- 			}
+ 				setTimeout(startFairy, 5000);
+  			}
 
 			//update freespin total
 			if(oGAME.freespinmode){
@@ -1500,6 +1498,14 @@
 			}
 			
 			setTimeout(doNextResult, next_delay);
+		}
+		
+		private function startFairy():void
+		{
+			fairyCountTimer = new Timer(1000, fairyAnimCountToRun);
+			fairyCountTimer.addEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
+			fairyCountTimer.start();
+			
 		}
 		
          //Timer to add the Fairy Animation one by one to cross the screen.
