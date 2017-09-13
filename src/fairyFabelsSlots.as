@@ -444,7 +444,7 @@
 				extra_icons[i]=null;
 			}
 			extra_icons = [];
-			
+ 			
    		}
 		 
 		//--------------------------------------
@@ -537,7 +537,7 @@
 							mc_msg.x = 380;
 							mc_msg.y = 260;
 							__timeline.mcBank.mc_msg = __timeline.addChild(mc_msg);
-							mc_msg.addEventListener(Event.ENTER_FRAME, onSparkleAnimation);
+//							mc_msg.addEventListener(Event.ENTER_FRAME, onSparkleAnimation);
 						 
 						}
 					}
@@ -566,9 +566,9 @@
 			return anim_time;
 		}
 		
-		private function onSparkleAnimation(eve:Event):void
+		/*private function onSparkleAnimation(eve:Event):void
 		{
-			
+			trace("coming here ::")
 			var me:MovieClip = MovieClip(eve.target);
 			
 			if(__timeline.mcBank.currentValue == __timeline.mcBank.targetValue)
@@ -576,7 +576,7 @@
 				me.removeEventListener(Event.ENTER_FRAME, onSparkleAnimation);
 				__timeline.removeChild(me);
 			}
- 		}
+ 		} */
 		
  		
 		//doUpdateBank()
