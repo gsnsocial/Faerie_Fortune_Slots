@@ -444,8 +444,8 @@
 				extra_icons[i]=null;
 			}
 			extra_icons = [];
-  
-  		}
+			
+   		}
 		 
 		//--------------------------------------
 		// general
@@ -616,7 +616,7 @@
 						coin.decel_x = .8;
 						coin.x = __timeline.mcResults.x - 100 + (Math.random()*200);
 						coin.y = __timeline.mcResults.y - 50;
-						coin.scaleX=coin.scaleY=.8;
+						coin.scaleX=coin.scaleY=.7;
 						__timeline.addChild(coin);
 					}
 					me.frame_counter--;
@@ -1470,7 +1470,6 @@
 			//animate bison
 			if(winning_symbol == "F" && res.symbols.length >= 2){
 				
- 				blittools_sounds.playSound("stampede", "SFX3");
 				next_delay = 3000;
 					
 				if(res.symbols.length >= 5){
@@ -1506,12 +1505,15 @@
          //Timer to add the Fairy Animation one by one to cross the screen.
 		private function addFairyAnimInTimer(eve:TimerEvent):void
 		{
+
               if(fairyCountTimer.currentCount == fairyAnimCountToRun)	{
 						
 						fairyCountTimer.removeEventListener(TimerEvent.TIMER, addFairyAnimInTimer);
 						fairyCountTimer.stop();
 				}					
-			
+				
+				blittools_sounds.playSound("stampede", "SFX3");
+
 				var bisonclip:MovieClip = MovieClip(new bison());
 				__timeline.addChild(bisonclip);
 				
