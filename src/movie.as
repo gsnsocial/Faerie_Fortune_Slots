@@ -30,7 +30,7 @@
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	
-	import src.buffaloSlots;
+	import src.fairyFabelsSlots;
 	import src.gsnSlotsApi;
 	import src.blit.*;
 	import fl.transitions.easing.*;
@@ -41,7 +41,7 @@
 		
 		//init
 		public var gsnTools:gsnSlotsApi;
-		public var __game:buffaloSlots;
+		public var __game:fairyFabelsSlots;
 		public var __timeline:MovieClip = MovieClip(this);
 		public var __controller:* = this;
 		public var game_id:int = 725; //521;
@@ -589,7 +589,7 @@
 			blittools_transitions.doStartCrossfade(__timeline, .5, 760, 540);
 			__timeline.gotoAndStop("init");
 			
-			__game = new buffaloSlots(__timeline, game_id, betAmountsArr2);
+			__game = new fairyFabelsSlots(__timeline, game_id, betAmountsArr2);
 		}
 		
 		//doGetSpinResults()
