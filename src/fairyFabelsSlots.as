@@ -66,7 +66,7 @@
 		public var tweenHolders2:Array = new Array();
 		
 		
-		public var betAmountsArr:Array = new Array(400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000,50000000);
+		public var betAmountsArr:Array = new Array(400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000);
 		//public var betAmountsArr:Array = new Array(40,80,200,400,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000);
  		
 		public var betAmountId:uint = 0;
@@ -750,6 +750,8 @@
 
 		public function doRecapTurn(e=null):void
 		{
+ 			 var anim_time:Number;
+			
 			if(__controller.isPaused){
 				__controller.pauseResumeFunction = doRecapTurn;
 				return;
@@ -759,7 +761,7 @@
 				
 				if(started_freespins==false){
 					started_freespins=true;
-					var anim_time:Number = doUpdateBank();
+					anim_time  = doUpdateBank();
 					__timeline.doDebug("anim_time = " + anim_time);
 					setTimeout(doResetTurn, anim_time*1000);
 				}else{
@@ -783,45 +785,46 @@
 		//doResetTurn()
 		public function doResetTurn(extra_delay:Number = 0):void
 		{
-			var delay:Number = 0;
+ 			//---paused-------
+			if(__controller.isPaused){
+				__controller.pauseResumeFunction = doResetTurn;
+				return;
+			}
+			//---------------			
+  			
 			gsnTools.doSetVariable("spinwinnings", 0);
-			if(oGAME.freespins > 0){
-				oGAME.freespins--;
-				__timeline.mcFreeSpinCount.doUpdate(oGAME.freespins);
-				doRequestSpin(true);
-				
-			}else{
-				doUnLockGame();
-				
-				wincycle_id = 0;
-				if(wincycle_arr.length > 0){
-					wincycle_timeout = setTimeout(doCycleNextWin, 5000);
-				}
-				
-				if(oGAME.freespinmode){
-					//reset to normal play mode
-					oGAME.freespinmode = false;
+ 			var delay:Number = 0;
+			var need_unlock:Boolean = false;
+			
+			if(oGAME.freespinmode){
+ 				if(oGAME.freespins > 0){
+					delay += extra_delay;
+ 					oGAME.freespins--;
+					__timeline.mcFreeSpinCount.doUpdate(oGAME.freespins);
+					doRequestSpin(true);
+					return;
+ 				}else{
 					
-					blittools_sounds.setVol("MUSIC", .2, 0);
-					blittools_sounds.playSound("music", "MUSIC", 999, null);
-
+					 blittools_sounds.setVol("MUSIC", .2, 0);
+					 blittools_sounds.playSound("music", "MUSIC", 999, null);
+					 oGAME.freespinmode = false;
 					 __timeline.mc_spingroup.bSpin.enabled = true;
-					 __timeline.mc_spingroup.bSpin.visible = true
-					//show spin button
-					 new Tween(__timeline.mc_spingroup.bSpin, "y", Regular.easeIn, __timeline.mc_spingroup.bSpin.y, 0.45, .5, true);
+					 __timeline.mc_spingroup.bSpin.visible = true;
+					 __timeline.mcFreeSpinCount.visible=false;
+				 
+ 					 new Tween(__timeline.mc_spingroup.bSpin, "y", Regular.easeIn, __timeline.mc_spingroup.bSpin.y, 0.45, .5, true);
 					 new Tween(__timeline.mc_spingroup.bSpin, "alpha", None.easeNone, __timeline.mc_spingroup.bSpin.alpha, 1, 1, true);
 					 new Tween(__timeline.mc_spingroup.bStop, "y", Regular.easeIn, __timeline.mc_spingroup.bStop.y, 0.45, .5, true);
 					 new Tween(__timeline.mc_spingroup.bStop, "alpha", None.easeNone, __timeline.mc_spingroup.bStop.alpha, 1, 1, true);
-					
-					__timeline.mcFreeSpinCount.visible=false;
- 
-					
 					new Tween(__timeline.mcBackground.sky2, "alpha", None.easeNone,  1, 0, 1, true).addEventListener(TweenEvent.MOTION_FINISH, function(e:Event){
 						__timeline.mcBackground.sky2.visible=false;
 					});
-
+					
+					delay += 1000;
+  
 				}
-			}
+				
+ 			}
 			
 			//autospin
 			if(oGAME.autospinmode){
@@ -837,7 +840,14 @@
 					setTimeout(doStopAutoSpin, delay);
 				}
 			}
-		}
+  				
+					wincycle_id = 0;
+					if(wincycle_arr.length > 0){
+						wincycle_timeout = setTimeout(doCycleNextWin, 5000);			
+					}
+			
+				   setTimeout(doUnLockGame, delay);
+ 		}
   
 		//doResumeAutoSpin()
 		private function doResumeAutoSpin(){
