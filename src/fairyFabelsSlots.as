@@ -326,7 +326,7 @@
 				doStartAutoSpin(10); 
 			});
 			__timeline.mc_spingroup.mcAutoSpinSelect.b25.addEventListener(MouseEvent.CLICK, function(e:Event) {
-				doStartAutoSpin(20); 
+				doStartAutoSpin(25); 
 			});
 			__timeline.mc_spingroup.mcAutoSpinSelect.b50.addEventListener(MouseEvent.CLICK, function(e:Event) {
 				doStartAutoSpin(50); 
