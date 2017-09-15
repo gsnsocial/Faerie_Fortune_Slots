@@ -71,7 +71,7 @@
 			txt_page.text = "1/2";
 			
 			blittools_text.doSwapTxt(hdr_paytable, oMESSAGES.hdr_paytable, []);
-			blittools_text.doSwapTxt(msg_paytable, oMESSAGES.msg_paytable, []);
+			//blittools_text.doSwapTxt(msg_paytable, oMESSAGES.msg_paytable, []);
 
 			blittools_general.doInitButton(bNext);
 			bNext.addEventListener(MouseEvent.CLICK, function(e:Event):void {
@@ -100,7 +100,7 @@
 			
 			blittools_text.doSwapTxt(hdr_wilds, oMESSAGES.hdr_wilds, []);
 			blittools_text.doSwapTxt(msg_wilds1, oMESSAGES.msg_wilds1,[]);
-//			blittools_text.doSwapTxt(msg_wilds2, oMESSAGES.msg_wilds2,[]);
+ 			blittools_text.doSwapTxt(msg_wilds2, oMESSAGES.msg_wilds2,[]);
 
  			
 			blittools_general.doInitButton(bPrev);
