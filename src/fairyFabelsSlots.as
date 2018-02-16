@@ -106,12 +106,13 @@
 		
 		private var fairyAnimCountToRun:int = 0;
 		private var fairyCountTimer:Timer;
-	
+		
+ 	
 		//-----------------------------
 		// init
 		//-----------------------------
 
-		public function fairyFabelsSlots(controller:*, id:int, betAmountsArr2:Array = null)
+		public function fairyFabelsSlots(controller:*, id:int, defBetBasedUser, betAmountsArr2:Array = null)
 		{
 
 			var pp:PerspectiveProjection;
@@ -149,8 +150,17 @@
 			
 			doChangeMessage();
 			
-			betAmountId = Math.min(doGetMaxBetId(), doGetDefaultBetId());
-			gsnTools.doSetVariable("bet", betAmountsArr[betAmountId]);
+ 			if(defBetBasedUser && defBetBasedUser > 0)
+			{
+				betAmountId = betAmountsArr.indexOf(defBetBasedUser);
+				gsnTools.doSetVariable("bet", defBetBasedUser);
+ 			}else {
+				
+				betAmountId = Math.min(doGetMaxBetId(), doGetDefaultBetId());
+				gsnTools.doSetVariable("bet", betAmountsArr[betAmountId]);
+			}
+			
+
 
 			__timeline.mcReels.mask = __timeline.mcReelMask;
 			__timeline.mcDimmer.alpha = 0;
@@ -161,12 +171,9 @@
 			pp.fieldOfView=40;
 			pp.projectionCenter=new Point(__timeline.mcPanelWin.x,__timeline.mcPanelWin.y);
 			__timeline.mcPanelWin.transform.perspectiveProjection = pp;
-				
-				
-
-			gsnTools.doChangeIdleState("on");
-
-					
+ 				
+ 			gsnTools.doChangeIdleState("on");
+ 					
 			__timeline.mcFreeSpinCount.visible=false;
 			__timeline.mc_spingroup.bSpin.visible=true;
  
@@ -212,11 +219,10 @@
 					doUpdateBetDisplay();
 				}
 			});
-			
-			
+ 			
 			doUpdateBetDisplay();
 	
-			if (Math.min(doGetMaxBetId(), doGetDefaultBetId()) >= (betAmountsArr.length-1)){
+			if (Math.min(doGetMaxBetId(), betAmountId) >= (betAmountsArr.length-1)){
 				__timeline.bBetUp.enabled = false;
 				__timeline.bBetUp.alpha = .3;
 			}else if (doGetDefaultBetId() <= 0){
@@ -267,9 +273,7 @@
 					}
 				}
 			});
-			
-			
-			
+ 			
 			//auto spin
 			__timeline.mc_spingroup.mcAutoSpinSelect.visible = false;
 			blittools_text.doSwapTxt(__timeline.mc_spingroup.bAutoSpin.txt, oMESSAGES.button_autospin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
@@ -331,10 +335,7 @@
 			__timeline.mc_spingroup.mcAutoSpinSelect.b50.addEventListener(MouseEvent.CLICK, function(e:Event) {
 				doStartAutoSpin(50); 
 			});
-			
-			
-			
-	
+  	
 			//spin;
 			blittools_text.doSwapTxt(__timeline.mc_spingroup.bSpin.txt, oMESSAGES.button_spin, [__controller.font_helv_uc, __timeline.font_arial_bold]);
 			blittools_general.doInitButton(__timeline.mc_spingroup.bSpin);
@@ -643,8 +644,8 @@
 			var b:Number = gsnTools.doGetVariable("bank");
 			var target:Number;
 			target = b * .0375;
-
-			var next_lowest_id:int = 0;
+			
+ 			var next_lowest_id:int = 0;
 			var next_highest_id:int = betAmountsArr.length-1;
 			var target_id:int;
 
@@ -663,13 +664,12 @@
 				}
 			}
 
-			if(target - betAmountsArr[next_lowest_id] < betAmountsArr[next_highest_id] - target){
+ 			if(target - betAmountsArr[next_lowest_id] < betAmountsArr[next_highest_id] - target){
 				target_id = next_lowest_id;
 			}else{
 				target_id = next_highest_id;
 			}
-
-			return target_id;
+ 			return target_id;
 		}
 		
 		//doGetMaxBetId()

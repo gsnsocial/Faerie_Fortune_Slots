@@ -93,6 +93,9 @@
 		private var betPerLine:Array;
 		private var betAmountsArr2:Array;
 		public var can_play:Boolean = false;
+		
+		
+		private var defaultBetBasedUser:int;
 
 		//------------------------------
 		// platfoerm events
@@ -257,6 +260,10 @@
 			if (root.loaderInfo.parameters.minMaxJson) {
 				minMaxJson = JSON.decode(root.loaderInfo.parameters.minMaxJson);
 				betPerLine = minMaxJson.betPerLine as Array;
+				
+ 				if(minMaxJson.defaultTotalBet){
+					defaultBetBasedUser =  minMaxJson.defaultTotalBet as int;
+				} 
 				if (betPerLine) {
 					doGenerateBetValues();
 				}
@@ -589,7 +596,7 @@
 			blittools_transitions.doStartCrossfade(__timeline, .5, 760, 540);
 			__timeline.gotoAndStop("init");
 			
-			__game = new fairyFabelsSlots(__timeline, game_id, betAmountsArr2);
+			__game = new fairyFabelsSlots(__timeline, game_id, defaultBetBasedUser,  betAmountsArr2);
 		}
 		
 		//doGetSpinResults()
